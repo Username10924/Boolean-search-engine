@@ -12,19 +12,39 @@ for line in data:
     text = headline + " " + body + " " + authors
     news.append(text)
 
-terms = dict()
+# create inverse index using dictionary
+# where every term will map to a set of documents its in
+index = dict()
+# --one time execution--
 def create_index(corpus):
     for doc in corpus:
         for word in nltk.word_tokenize(doc):
-            if(word.lower() in terms):
-                terms[word.lower()].add(doc)
+            if(word.lower() in index):
+                index[word.lower()].add(doc)
             else:
-                terms[word.lower()] = {doc}
+                index[word.lower()] = {doc}
 create_index(news)
+# all results now saved in index
+
+def boolean_search(query, index):
+    results = set()
+    wordList = query.split()
+    for word in wordList:
+        if('&' in word):
+            word1 = word.split('&')[0]
+            word2 = word.split('&')[1]
+            results.update(index[word1].intersection(index[word2]))
+        else:
+            results.update(index[word])
+    return list(results)
 
 start = time.time()
-result = terms["america"]
+print(boolean_search("china&collapse saudi", index))
 end = time.time()
 print((end - start)*10**6)
-for doc in result:
-    print(doc + "\n\n")
+
+
+# alpha = {"a", "b", "c"}
+# beta = {"b", "a"}
+# gamma = alpha.intersection(beta)
+# print(gamma)
