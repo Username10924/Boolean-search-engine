@@ -38,19 +38,23 @@ def boolean_search(query, index):
             results.update(index[word])
     return list(results)
 
-""" start = time.time()
-results = boolean_search("china&collapse saudi", index)
-end = time.time()
-i = 0
-for result in results:
-    print(result)
-    print()
-    i += 1
-print("Time in ms: ")
-print((end - start)*10**6)
-print("Total results: ")
-print(i) """
+def startApp():
+    query = input("Search: ")
+    start = time.time()
+    results = boolean_search(query, index)
+    end = time.time()
+    i = 0
+    for result in results:
+        print(result)
+        print()
+        i += 1
+    print("Time in ms: ")
+    print((end - start)*10**6)
+    print("Total results: ")
+    print(i)
 
+while(1):
+    startApp()
 
 # alpha = {"a", "b", "c"}
 # beta = {"b", "a"}
