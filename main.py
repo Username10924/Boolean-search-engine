@@ -31,12 +31,19 @@ def boolean_search(query, index):
     wordList = query.split()
     for word in wordList:
         if('&' in word):
-            word1 = word.split('&')[0]
-            word2 = word.split('&')[1]
-            results.update(index[word1].intersection(index[word2]))
+            words = word.split('&')
+            # must use format .get(word, set()) instead of .get(word) or it just returns 'set()'
+            # or index[word] but this returns an exception if word is not in index
+            intersectedWords = index.get(words[0], set())
+            for i in words:
+                intersectedWords = intersectedWords.intersection(index.get(i, set()))
+            results.update(intersectedWords)
         else:
-            results.update(index[word])
-    return list(results)
+            results.update(index.get(word, set()))
+    if(results):
+        return list(results)
+    else:
+        return ["No results found!"]
 
 def startApp():
     query = input("Search: ")
@@ -55,8 +62,3 @@ def startApp():
 
 while(1):
     startApp()
-
-# alpha = {"a", "b", "c"}
-# beta = {"b", "a"}
-# gamma = alpha.intersection(beta)
-# print(gamma)
