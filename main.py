@@ -9,7 +9,9 @@ for line in data:
     headline = line['headline']
     body = line['short_description']
     authors = line['authors']
-    text = headline + " " + body + " " + authors
+    date = line['date']
+    category = line['category']
+    text = headline + " " + body + " " + authors + " " + date + " " + category
     news.append(text)
 
 # create inverse index using dictionary
